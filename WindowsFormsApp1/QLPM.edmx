@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QLPMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MayTinh">
+          <Key>
+            <PropertyRef Name="Somay" />
+          </Key>
+          <Property Name="Somay" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="HDD" Type="nvarchar" MaxLength="50" />
+          <Property Name="CPU" Type="nvarchar" MaxLength="50" />
+          <Property Name="RAM" Type="nvarchar" MaxLength="50" />
+          <Property Name="Sophong" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MonHoc">
+          <Key>
+            <PropertyRef Name="MaMH" />
+          </Key>
+          <Property Name="MaMH" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TenMH" Type="nvarchar" MaxLength="50" />
+          <Property Name="SoDVHT" Type="int" />
+        </EntityType>
+        <EntityType Name="PhongMay">
+          <Key>
+            <PropertyRef Name="Sophong" />
+          </Key>
+          <Property Name="Sophong" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nguoiql" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="ThucHanh">
+          <Key>
+            <PropertyRef Name="Sophong" />
+            <PropertyRef Name="MaMH" />
+          </Key>
+          <Property Name="Sophong" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MaMH" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NgayTH" Type="date" />
+          <Property Name="GiaovienTH" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_MayTinh_PhongMay">
+          <End Role="PhongMay" Type="Self.PhongMay" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MayTinh" Type="Self.MayTinh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhongMay">
+              <PropertyRef Name="Sophong" />
+            </Principal>
+            <Dependent Role="MayTinh">
+              <PropertyRef Name="Sophong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ThucHanh_MonHoc">
+          <End Role="MonHoc" Type="Self.MonHoc" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ThucHanh" Type="Self.ThucHanh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MonHoc">
+              <PropertyRef Name="MaMH" />
+            </Principal>
+            <Dependent Role="ThucHanh">
+              <PropertyRef Name="MaMH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ThucHanh_PhongMay">
+          <End Role="PhongMay" Type="Self.PhongMay" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ThucHanh" Type="Self.ThucHanh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhongMay">
+              <PropertyRef Name="Sophong" />
+            </Principal>
+            <Dependent Role="ThucHanh">
+              <PropertyRef Name="Sophong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="tkslmtheophong" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="QLPMModelStoreContainer">
+          <EntitySet Name="MayTinh" EntityType="Self.MayTinh" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MonHoc" EntityType="Self.MonHoc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PhongMay" EntityType="Self.PhongMay" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ThucHanh" EntityType="Self.ThucHanh" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_MayTinh_PhongMay" Association="Self.FK_MayTinh_PhongMay">
+            <End Role="PhongMay" EntitySet="PhongMay" />
+            <End Role="MayTinh" EntitySet="MayTinh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ThucHanh_MonHoc" Association="Self.FK_ThucHanh_MonHoc">
+            <End Role="MonHoc" EntitySet="MonHoc" />
+            <End Role="ThucHanh" EntitySet="ThucHanh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ThucHanh_PhongMay" Association="Self.FK_ThucHanh_PhongMay">
+            <End Role="PhongMay" EntitySet="PhongMay" />
+            <End Role="ThucHanh" EntitySet="ThucHanh" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLPMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MayTinh">
+          <Key>
+            <PropertyRef Name="Somay" />
+          </Key>
+          <Property Name="Somay" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HDD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CPU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RAM" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sophong" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PhongMay" Relationship="Self.FK_MayTinh_PhongMay" FromRole="MayTinh" ToRole="PhongMay" />
+        </EntityType>
+        <EntityType Name="MonHoc">
+          <Key>
+            <PropertyRef Name="MaMH" />
+          </Key>
+          <Property Name="MaMH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TenMH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SoDVHT" Type="Int32" />
+          <NavigationProperty Name="ThucHanhs" Relationship="Self.FK_ThucHanh_MonHoc" FromRole="MonHoc" ToRole="ThucHanh" />
+        </EntityType>
+        <EntityType Name="PhongMay">
+          <Key>
+            <PropertyRef Name="Sophong" />
+          </Key>
+          <Property Name="Sophong" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nguoiql" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MayTinhs" Relationship="Self.FK_MayTinh_PhongMay" FromRole="PhongMay" ToRole="MayTinh" />
+          <NavigationProperty Name="ThucHanhs" Relationship="Self.FK_ThucHanh_PhongMay" FromRole="PhongMay" ToRole="ThucHanh" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="ThucHanh">
+          <Key>
+            <PropertyRef Name="Sophong" />
+            <PropertyRef Name="MaMH" />
+          </Key>
+          <Property Name="Sophong" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MaMH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NgayTH" Type="DateTime" Precision="0" />
+          <Property Name="GiaovienTH" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="MonHoc" Relationship="Self.FK_ThucHanh_MonHoc" FromRole="ThucHanh" ToRole="MonHoc" />
+          <NavigationProperty Name="PhongMay" Relationship="Self.FK_ThucHanh_PhongMay" FromRole="ThucHanh" ToRole="PhongMay" />
+        </EntityType>
+        <Association Name="FK_MayTinh_PhongMay">
+          <End Role="PhongMay" Type="Self.PhongMay" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MayTinh" Type="Self.MayTinh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhongMay">
+              <PropertyRef Name="Sophong" />
+            </Principal>
+            <Dependent Role="MayTinh">
+              <PropertyRef Name="Sophong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ThucHanh_MonHoc">
+          <End Role="MonHoc" Type="Self.MonHoc" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ThucHanh" Type="Self.ThucHanh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MonHoc">
+              <PropertyRef Name="MaMH" />
+            </Principal>
+            <Dependent Role="ThucHanh">
+              <PropertyRef Name="MaMH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ThucHanh_PhongMay">
+          <End Role="PhongMay" Type="Self.PhongMay" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ThucHanh" Type="Self.ThucHanh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhongMay">
+              <PropertyRef Name="Sophong" />
+            </Principal>
+            <Dependent Role="ThucHanh">
+              <PropertyRef Name="Sophong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLPMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MayTinhs" EntityType="Self.MayTinh" />
+          <EntitySet Name="MonHocs" EntityType="Self.MonHoc" />
+          <EntitySet Name="PhongMays" EntityType="Self.PhongMay" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="ThucHanhs" EntityType="Self.ThucHanh" />
+          <AssociationSet Name="FK_MayTinh_PhongMay" Association="Self.FK_MayTinh_PhongMay">
+            <End Role="PhongMay" EntitySet="PhongMays" />
+            <End Role="MayTinh" EntitySet="MayTinhs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ThucHanh_MonHoc" Association="Self.FK_ThucHanh_MonHoc">
+            <End Role="MonHoc" EntitySet="MonHocs" />
+            <End Role="ThucHanh" EntitySet="ThucHanhs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ThucHanh_PhongMay" Association="Self.FK_ThucHanh_PhongMay">
+            <End Role="PhongMay" EntitySet="PhongMays" />
+            <End Role="ThucHanh" EntitySet="ThucHanhs" />
+          </AssociationSet>
+          <FunctionImport Name="tkslmtheophong" ReturnType="Collection(QLPMModel.tkslmtheophong_Result)" />
+        </EntityContainer>
+        <ComplexType Name="tkslmtheophong_Result">
+          <Property Type="Int32" Name="Soluongmay" Nullable="true" />
+          <Property Type="String" Name="Sophong" Nullable="false" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLPMModelStoreContainer" CdmEntityContainer="QLPMEntities">
+          <EntitySetMapping Name="MayTinhs">
+            <EntityTypeMapping TypeName="QLPMModel.MayTinh">
+              <MappingFragment StoreEntitySet="MayTinh">
+                <ScalarProperty Name="Somay" ColumnName="Somay" />
+                <ScalarProperty Name="HDD" ColumnName="HDD" />
+                <ScalarProperty Name="CPU" ColumnName="CPU" />
+                <ScalarProperty Name="RAM" ColumnName="RAM" />
+                <ScalarProperty Name="Sophong" ColumnName="Sophong" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MonHocs">
+            <EntityTypeMapping TypeName="QLPMModel.MonHoc">
+              <MappingFragment StoreEntitySet="MonHoc">
+                <ScalarProperty Name="MaMH" ColumnName="MaMH" />
+                <ScalarProperty Name="TenMH" ColumnName="TenMH" />
+                <ScalarProperty Name="SoDVHT" ColumnName="SoDVHT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhongMays">
+            <EntityTypeMapping TypeName="QLPMModel.PhongMay">
+              <MappingFragment StoreEntitySet="PhongMay">
+                <ScalarProperty Name="Sophong" ColumnName="Sophong" />
+                <ScalarProperty Name="Nguoiql" ColumnName="Nguoiql" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="QLPMModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThucHanhs">
+            <EntityTypeMapping TypeName="QLPMModel.ThucHanh">
+              <MappingFragment StoreEntitySet="ThucHanh">
+                <ScalarProperty Name="Sophong" ColumnName="Sophong" />
+                <ScalarProperty Name="MaMH" ColumnName="MaMH" />
+                <ScalarProperty Name="NgayTH" ColumnName="NgayTH" />
+                <ScalarProperty Name="GiaovienTH" ColumnName="GiaovienTH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="tkslmtheophong" FunctionName="QLPMModel.Store.tkslmtheophong">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QLPMModel.tkslmtheophong_Result">
+                <ScalarProperty Name="Soluongmay" ColumnName="Soluongmay" />
+                <ScalarProperty Name="Sophong" ColumnName="Sophong" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

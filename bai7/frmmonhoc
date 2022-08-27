@@ -1,0 +1,155 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace bai7
+{
+    public partial class Form1 : Form
+    {
+        QLD7Entities db = new QLD7Entities();
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            hienthi();
+            khoa();
+            hienthicb();
+        }
+        public void hienthicb()
+        {
+            cbmakhoa.DataSource = db.tbMonhocs.ToList();
+            cbmakhoa.ValueMember = "Makhoa";
+            cbmakhoa.DisplayMember = "Makhoa";
+        }
+        public void hienthi()
+        {
+            listView1.Items.Clear();
+            foreach (var mh in db.tbMonhocs.ToList())
+            {
+                ListViewItem item = new ListViewItem(mh.Mamon);
+                
+              
+                item.SubItems.Add(mh.Tenmon);
+                item.SubItems.Add(mh.Makhoa);
+                item.SubItems.Add(mh.Sohocphan);
+                item.SubItems.Add(mh.Giaovien);
+                listView1.Items.Add(item);
+            }    
+        }
+        public void Mokhoa()
+        {
+            btsua.Enabled = true;
+            btxoa.Enabled = true;
+            txtgiaovien.Enabled = true;
+            txtmamon.Enabled = true;
+            txtsohocphan.Enabled = true;
+            txttenmon.Enabled = true;
+            cbmakhoa.Enabled = true;
+        }
+        public void khoa()
+        {
+            btsua.Enabled = false;
+            btxoa.Enabled = false;
+            txtgiaovien.Enabled = false;
+            txtmamon.Enabled = false;
+            txtsohocphan.Enabled = false;
+            txttenmon.Enabled = false;
+            cbmakhoa.Enabled = false;
+        }
+        private void btcapnhat_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if(btcapnhat.Text=="Cập nhật")
+                {
+                    btcapnhat.Text = "Lưu";
+                    Mokhoa();
+                }    
+                else
+                {
+                    tbMonhoc p = new tbMonhoc();
+                    p.Mamon = txtmamon.Text;
+                    p.Tenmon = txttenmon.Text;
+                    p.Makhoa = cbmakhoa.Text;
+                    p.Sohocphan = txtsohocphan.Text;
+                    p.Giaovien = txtgiaovien.Text;
+                    db.tbMonhocs.Add(p);
+                    db.SaveChanges();
+                    hienthi();
+                    khoa();
+                    btcapnhat.Text = "Cập nhật";
+
+                }    
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("lỗi không thêm được");
+            }
+
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(listView1.SelectedItems.Count>0)
+            {
+                ListViewItem item = listView1.SelectedItems[0];
+                txtmamon.Text = item.SubItems[0].Text;
+                txttenmon.Text = item.SubItems[1].Text;
+                cbmakhoa.Text = item.SubItems[2].Text;
+                txtsohocphan.Text = item.SubItems[3].Text;
+                txtgiaovien.Text = item.SubItems[4].Text;
+                btxoa.Enabled = true;
+                btsua.Enabled = true;
+            }    
+        }
+
+        private void btxoa_Click(object sender, EventArgs e)
+        {
+            tbMonhoc mon = db.tbMonhocs.Find(txtmamon.Text);
+            db.tbMonhocs.Remove(mon);
+            db.SaveChanges();
+            hienthi();
+        }
+
+        private void btsua_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (btsua.Text == "Sửa")
+                {
+                    btsua.Text = "Lưu";
+                    Mokhoa();
+                    txtmamon.Enabled = false;
+                }
+                else
+                {
+                    tbMonhoc mon = db.tbMonhocs.Find(txtmamon.Text);
+                    mon.Mamon = txtmamon.Text;
+                    mon.Tenmon = txttenmon.Text;
+                    mon.Makhoa = cbmakhoa.Text;
+                    mon.Sohocphan = txtsohocphan.Text;
+                    mon.Giaovien = txtgiaovien.Text;
+                    db.SaveChanges();
+                    hienthi();
+                    btsua.Text = "Sửa";
+                    khoa();
+
+                }    
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("lỗi không sửa được");
+            }
+            
+        }
+    }
+}

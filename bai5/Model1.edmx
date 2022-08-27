@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QLKS1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Khachhang">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Hoten" Type="nvarchar" MaxLength="50" />
+          <Property Name="SoCMND" Type="varchar" MaxLength="12" />
+          <Property Name="Ngayden" Type="date" />
+          <Property Name="Maphong" Type="varchar" MaxLength="10" />
+          <Property Name="Songayo" Type="int" />
+          <Property Name="Thanhtien" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Phong">
+          <Key>
+            <PropertyRef Name="Maphong" />
+          </Key>
+          <Property Name="Maphong" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Sogiuong" Type="int" />
+          <Property Name="Dongia" Type="bigint" />
+          <Property Name="Tinhtrang" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <Association Name="FK_Khachhang_Phong">
+          <End Role="Phong" Type="Self.Phong" Multiplicity="0..1" />
+          <End Role="Khachhang" Type="Self.Khachhang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Phong">
+              <PropertyRef Name="Maphong" />
+            </Principal>
+            <Dependent Role="Khachhang">
+              <PropertyRef Name="Maphong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLKS1ModelStoreContainer">
+          <EntitySet Name="Khachhang" EntityType="Self.Khachhang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Phong" EntityType="Self.Phong" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Khachhang_Phong" Association="Self.FK_Khachhang_Phong">
+            <End Role="Phong" EntitySet="Phong" />
+            <End Role="Khachhang" EntitySet="Khachhang" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLKS1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Khachhang">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Hoten" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SoCMND" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="Ngayden" Type="DateTime" Precision="0" />
+          <Property Name="Maphong" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Songayo" Type="Int32" />
+          <Property Name="Thanhtien" Type="Int64" />
+          <NavigationProperty Name="Phong" Relationship="Self.FK_Khachhang_Phong" FromRole="Khachhang" ToRole="Phong" />
+        </EntityType>
+        <EntityType Name="Phong">
+          <Key>
+            <PropertyRef Name="Maphong" />
+          </Key>
+          <Property Name="Maphong" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sogiuong" Type="Int32" />
+          <Property Name="Dongia" Type="Int64" />
+          <Property Name="Tinhtrang" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Khachhangs" Relationship="Self.FK_Khachhang_Phong" FromRole="Phong" ToRole="Khachhang" />
+        </EntityType>
+        <Association Name="FK_Khachhang_Phong">
+          <End Role="Phong" Type="Self.Phong" Multiplicity="0..1" />
+          <End Role="Khachhang" Type="Self.Khachhang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Phong">
+              <PropertyRef Name="Maphong" />
+            </Principal>
+            <Dependent Role="Khachhang">
+              <PropertyRef Name="Maphong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLKS1Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Khachhangs" EntityType="Self.Khachhang" />
+          <EntitySet Name="Phongs" EntityType="Self.Phong" />
+          <AssociationSet Name="FK_Khachhang_Phong" Association="Self.FK_Khachhang_Phong">
+            <End Role="Phong" EntitySet="Phongs" />
+            <End Role="Khachhang" EntitySet="Khachhangs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLKS1ModelStoreContainer" CdmEntityContainer="QLKS1Entities">
+          <EntitySetMapping Name="Khachhangs">
+            <EntityTypeMapping TypeName="QLKS1Model.Khachhang">
+              <MappingFragment StoreEntitySet="Khachhang">
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="Hoten" ColumnName="Hoten" />
+                <ScalarProperty Name="SoCMND" ColumnName="SoCMND" />
+                <ScalarProperty Name="Ngayden" ColumnName="Ngayden" />
+                <ScalarProperty Name="Maphong" ColumnName="Maphong" />
+                <ScalarProperty Name="Songayo" ColumnName="Songayo" />
+                <ScalarProperty Name="Thanhtien" ColumnName="Thanhtien" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Phongs">
+            <EntityTypeMapping TypeName="QLKS1Model.Phong">
+              <MappingFragment StoreEntitySet="Phong">
+                <ScalarProperty Name="Maphong" ColumnName="Maphong" />
+                <ScalarProperty Name="Sogiuong" ColumnName="Sogiuong" />
+                <ScalarProperty Name="Dongia" ColumnName="Dongia" />
+                <ScalarProperty Name="Tinhtrang" ColumnName="Tinhtrang" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
